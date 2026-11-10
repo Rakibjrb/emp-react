@@ -92,7 +92,7 @@ const EmployeeDetails = ({ employee, onEdit, onDelete }) => {
                   <button
                     type="button"
                     onClick={() => onDelete(employee)}
-                    className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 rounded-lg transition-colors"
+                    className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 rounded-lg transition-colors"
                   >
                     <FiTrash2 className="w-4 h-4" />
                     <span>Delete</span>

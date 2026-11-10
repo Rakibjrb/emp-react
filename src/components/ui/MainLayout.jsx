@@ -3,9 +3,10 @@ import Sidebar from "./Sidebar";
 import EmployeeDetails from "./EmployeeDetails";
 // import AddEmployeeModal from "../common/AddEmployeeModal";
 // import UpdateEmployeeModal from "../common/UpdateEmployeeModal";
-// import ConfirmationModal from "../common/ConfirmationModal";
+import ConfirmationModal from "../common/ConfirmationModal";
 
 const MainLayout = () => {
+  const [deleted, setDeleted] = useState(false);
   const [employees, setEmployees] = useState([]);
   const [selectedEmployeeId, setSelectedEmployeeId] = useState(0);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
@@ -15,7 +16,7 @@ const MainLayout = () => {
   // Modal open states
   // const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   // const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
-  // const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const handleSelectEmployee = async (id) => {
     let employeeDetails = {};
@@ -37,9 +38,22 @@ const MainLayout = () => {
 
   const handleOpenEdit = () => {};
 
-  const handleOpenDelete = () => {};
-
-  const handleDeleteConfirm = () => {};
+  const handleDeleteConfirm = async () => {
+    try {
+      await fetch(
+        `https://emp-nestjs.onrender.com/api/employees/${selectedEmployeeId}`,
+        {
+          method: "DELETE",
+        },
+      );
+      setDeleted(true);
+      setSelectedEmployeeId(0);
+      setSelectedEmployee(null);
+      setIsDeleteModalOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // fetch employee data from api
   useEffect(() => {
@@ -55,7 +69,9 @@ const MainLayout = () => {
         console.log(e);
         setEmployees([]);
       });
-  }, [searchQuery, roleFilter]);
+
+    setDeleted(false);
+  }, [searchQuery, roleFilter, deleted]);
 
   return (
     <div className="flex h-screen w-full bg-gray-100 overflow-hidden font-sans antialiased text-gray-900">
@@ -76,7 +92,7 @@ const MainLayout = () => {
         <EmployeeDetails
           employee={selectedEmployee}
           onEdit={handleOpenEdit}
-          onDelete={handleOpenDelete}
+          onDelete={() => setIsDeleteModalOpen(true)}
         />
       </main>
 
@@ -92,7 +108,7 @@ const MainLayout = () => {
         employee={selectedEmployee}
       /> */}
 
-      {/* <ConfirmationModal
+      <ConfirmationModal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleDeleteConfirm}
@@ -100,7 +116,7 @@ const MainLayout = () => {
         message={`Are you sure you want to delete ${selectedEmployee?.name || "this employee"}? This action cannot be undone.`}
         confirmText="Delete"
         type="danger"
-      /> */}
+      />
     </div>
   );
 };
