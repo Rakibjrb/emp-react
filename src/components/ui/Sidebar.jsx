@@ -1,10 +1,10 @@
-import React from 'react';
-import { FiSearch, FiUserPlus, FiBriefcase } from 'react-icons/fi';
+import React from "react";
+import { FiSearch, FiUserPlus, FiBriefcase } from "react-icons/fi";
 
 const roleBadgeColors = {
-  admin: 'bg-purple-50 text-purple-700 border-purple-200',
-  manager: 'bg-blue-50 text-blue-700 border-blue-200',
-  employee: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+  admin: "bg-purple-50 text-purple-700 border-purple-200",
+  manager: "bg-blue-50 text-blue-700 border-blue-200",
+  employee: "bg-emerald-50 text-emerald-700 border-emerald-200",
 };
 
 const Sidebar = ({
@@ -23,9 +23,12 @@ const Sidebar = ({
       <div className="p-4 border-b border-gray-100 space-y-3">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-bold text-gray-900 tracking-tight">Employees</h2>
+            <h2 className="text-lg font-bold text-gray-900 tracking-tight">
+              Employees
+            </h2>
             <p className="text-xs text-gray-500 font-medium">
-              {employees.length} {employees.length === 1 ? 'member' : 'members'} found
+              {employees.length} {employees.length === 1 ? "member" : "members"}{" "}
+              found
             </p>
           </div>
           {onAddClick && (
@@ -78,17 +81,17 @@ const Sidebar = ({
             const isSelected = emp.id === selectedEmployeeId;
             const badgeClass =
               roleBadgeColors[emp.role?.toLowerCase()] ||
-              'bg-gray-50 text-gray-700 border-gray-200';
+              "bg-gray-50 text-gray-700 border-gray-200";
 
             return (
               <button
                 key={emp.id}
                 type="button"
-                onClick={() => onSelectEmployee(emp)}
-                className={`w-full text-left p-3 rounded-xl transition-all flex items-center gap-3.5 ${
+                onClick={() => onSelectEmployee(emp.id)}
+                className={`cursor-pointer w-full text-left p-3 rounded-xl transition-all flex items-center gap-3.5 ${
                   isSelected
-                    ? 'bg-blue-50/80 border border-blue-200/80 shadow-xs'
-                    : 'hover:bg-gray-50 border border-transparent'
+                    ? "bg-blue-50/80 border border-blue-200/80 shadow-xs"
+                    : "hover:bg-gray-50 border border-transparent"
                 }`}
               >
                 {/* Avatar */}
@@ -99,7 +102,7 @@ const Sidebar = ({
                     className="w-11 h-11 rounded-full object-cover border border-gray-200 bg-gray-100"
                     onError={(e) => {
                       e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
-                        emp.name
+                        emp.name,
                       )}&background=random`;
                     }}
                   />
@@ -110,7 +113,7 @@ const Sidebar = ({
                   <div className="flex items-center justify-between gap-1">
                     <h3
                       className={`text-sm font-semibold truncate ${
-                        isSelected ? 'text-blue-900' : 'text-gray-900'
+                        isSelected ? "text-blue-900" : "text-gray-900"
                       }`}
                     >
                       {emp.name}
@@ -122,7 +125,9 @@ const Sidebar = ({
                     </span>
                   </div>
 
-                  <p className="text-xs text-gray-500 truncate mt-0.5">{emp.position}</p>
+                  <p className="text-xs text-gray-500 truncate mt-0.5">
+                    {emp.position}
+                  </p>
 
                   <div className="flex items-center gap-1 text-[11px] text-gray-400 mt-1 truncate">
                     <FiBriefcase className="w-3 h-3 shrink-0" />

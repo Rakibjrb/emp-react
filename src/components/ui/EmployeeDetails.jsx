@@ -30,6 +30,7 @@ const formatDate = (isoString) => {
 };
 
 const EmployeeDetails = ({ employee, onEdit, onDelete }) => {
+  // console.log(employee);
   if (!employee) {
     return (
       <div className="h-full flex flex-col items-center justify-center p-8 text-center bg-gray-50/50">

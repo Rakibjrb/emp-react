@@ -7,7 +7,8 @@ import EmployeeDetails from "./EmployeeDetails";
 
 const MainLayout = () => {
   const [employees, setEmployees] = useState([]);
-  const [selectedEmployeeId, setSelectedEmployeeId] = useState(1);
+  const [selectedEmployeeId, setSelectedEmployeeId] = useState(0);
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
 
@@ -16,7 +17,21 @@ const MainLayout = () => {
   // const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   // const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const handleSelectEmployee = (emp) => {};
+  const handleSelectEmployee = async (id) => {
+    let employeeDetails = {};
+    try {
+      const res = await fetch(
+        `https://emp-nestjs.onrender.com/api/employees/${id}`,
+      );
+      const data = await res.json();
+      employeeDetails = data.data;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setSelectedEmployeeId(id);
+      setSelectedEmployee(employeeDetails);
+    }
+  };
 
   const handleOpenAdd = () => {};
 
@@ -59,7 +74,7 @@ const MainLayout = () => {
       {/* Main Content Area - Employee Details */}
       <main className="flex-1 flex flex-col h-full min-w-0 overflow-hidden">
         <EmployeeDetails
-          employee={{}}
+          employee={selectedEmployee}
           onEdit={handleOpenEdit}
           onDelete={handleOpenDelete}
         />
