@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import EmployeeDetails from "./EmployeeDetails";
-// import AddEmployeeModal from "../common/AddEmployeeModal";
+import AddEmployeeModal from "../common/AddEmployeeModal";
 // import UpdateEmployeeModal from "../common/UpdateEmployeeModal";
 import ConfirmationModal from "../common/ConfirmationModal";
 
 const MainLayout = () => {
-  const [deleted, setDeleted] = useState(false);
+  const [reloadData, setReloadData] = useState(false);
   const [employees, setEmployees] = useState([]);
   const [selectedEmployeeId, setSelectedEmployeeId] = useState(0);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
@@ -14,7 +14,7 @@ const MainLayout = () => {
   const [roleFilter, setRoleFilter] = useState("all");
 
   // Modal open states
-  // const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   // const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -34,9 +34,27 @@ const MainLayout = () => {
     }
   };
 
-  const handleOpenAdd = () => {};
-
   const handleOpenEdit = () => {};
+
+  const handleCreateEmployee = async (data) => {
+    try {
+      const res = await fetch("https://emp-nestjs.onrender.com/api/employees", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await res.json();
+
+      console.log(result);
+      setReloadData(true);
+      setIsAddModalOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleDeleteConfirm = async () => {
     try {
@@ -46,7 +64,7 @@ const MainLayout = () => {
           method: "DELETE",
         },
       );
-      setDeleted(true);
+      setReloadData(true);
       setSelectedEmployeeId(0);
       setSelectedEmployee(null);
       setIsDeleteModalOpen(false);
@@ -70,8 +88,8 @@ const MainLayout = () => {
         setEmployees([]);
       });
 
-    setDeleted(false);
-  }, [searchQuery, roleFilter, deleted]);
+    setReloadData(false);
+  }, [searchQuery, roleFilter, reloadData]);
 
   return (
     <div className="flex h-screen w-full bg-gray-100 overflow-hidden font-sans antialiased text-gray-900">
@@ -84,7 +102,7 @@ const MainLayout = () => {
         onSearchChange={setSearchQuery}
         roleFilter={roleFilter}
         onFilterChange={setRoleFilter}
-        onAddClick={handleOpenAdd}
+        onAddClick={() => setIsAddModalOpen(true)}
       />
 
       {/* Main Content Area - Employee Details */}
@@ -97,10 +115,11 @@ const MainLayout = () => {
       </main>
 
       {/* Modals */}
-      {/* <AddEmployeeModal
+      <AddEmployeeModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-      /> */}
+        onSubmit={handleCreateEmployee}
+      />
 
       {/* <UpdateEmployeeModal
         isOpen={isUpdateModalOpen}

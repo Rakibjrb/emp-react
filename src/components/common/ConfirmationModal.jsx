@@ -1,27 +1,27 @@
-import React, { useEffect } from 'react';
-import { FiAlertTriangle, FiX, FiLoader } from 'react-icons/fi';
+import React, { useEffect } from "react";
+import { FiAlertTriangle, FiX, FiLoader } from "react-icons/fi";
 
 const ConfirmationModal = ({
   isOpen,
   onClose,
   onConfirm,
-  title = 'Confirm Action',
-  message = 'Are you sure you want to proceed? This action cannot be undone.',
-  confirmText = 'Confirm',
-  cancelText = 'Cancel',
-  type = 'danger', // 'danger' | 'warning' | 'info'
+  title = "Confirm Action",
+  message = "Are you sure you want to proceed? This action cannot be undone.",
+  confirmText = "Confirm",
+  cancelText = "Cancel",
+  type = "danger", // 'danger' | 'warning' | 'info'
   isLoading = false,
 }) => {
   // Close on 'Escape' key press
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape' && isOpen && !isLoading) {
+      if (e.key === "Escape" && isOpen && !isLoading) {
         onClose();
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, isLoading, onClose]);
 
   if (!isOpen) return null;
@@ -29,16 +29,16 @@ const ConfirmationModal = ({
   // Visual variants for danger/warning/info
   const typeStyles = {
     danger: {
-      iconBg: 'bg-red-50 text-red-600',
-      buttonBg: 'bg-red-600 hover:bg-red-700 focus:ring-red-500',
+      iconBg: "bg-red-50 text-red-600",
+      buttonBg: "bg-red-600 hover:bg-red-700 focus:ring-red-500",
     },
     warning: {
-      iconBg: 'bg-amber-50 text-amber-600',
-      buttonBg: 'bg-amber-600 hover:bg-amber-700 focus:ring-amber-500',
+      iconBg: "bg-amber-50 text-amber-600",
+      buttonBg: "bg-amber-600 hover:bg-amber-700 focus:ring-amber-500",
     },
     info: {
-      iconBg: 'bg-blue-50 text-blue-600',
-      buttonBg: 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500',
+      iconBg: "bg-blue-50 text-blue-600",
+      buttonBg: "bg-blue-600 hover:bg-blue-700 focus:ring-blue-500",
     },
   };
 
@@ -97,7 +97,7 @@ const ConfirmationModal = ({
             type="button"
             onClick={onClose}
             disabled={isLoading}
-            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-200 transition-colors disabled:opacity-50"
+            className="cursor-pointer px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-200 transition-colors disabled:opacity-50"
           >
             {cancelText}
           </button>
@@ -106,7 +106,7 @@ const ConfirmationModal = ({
             type="button"
             onClick={onConfirm}
             disabled={isLoading}
-            className={`inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-1 transition-colors disabled:opacity-50 ${currentStyle.buttonBg}`}
+            className={`cursor-pointer inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-1 transition-colors disabled:opacity-50 ${currentStyle.buttonBg}`}
           >
             {isLoading ? (
               <span className="flex items-center gap-2">

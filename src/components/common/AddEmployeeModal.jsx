@@ -1,8 +1,25 @@
-import React from 'react';
-import { FiX, FiUser, FiMail, FiBriefcase, FiLayers } from 'react-icons/fi';
+import { useState } from "react";
+import { FiX, FiUser, FiMail, FiBriefcase, FiLayers } from "react-icons/fi";
 
-const AddEmployeeModal = ({ isOpen, onClose }) => {
+const AddEmployeeModal = ({ isOpen, onClose, onSubmit }) => {
   if (!isOpen) return null;
+
+  const [data, setData] = useState({
+    name: "",
+    email: "",
+    department: "",
+    position: "",
+  });
+
+  const handleInputFields = (e) => {
+    const { name, value } = e.target;
+    setData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleCreateEmployee = (e) => {
+    e.preventDefault();
+    onSubmit(data);
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
@@ -11,8 +28,12 @@ const AddEmployeeModal = ({ isOpen, onClose }) => {
         {/* Modal Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
           <div>
-            <h3 className="text-lg font-bold text-gray-900">Add New Employee</h3>
-            <p className="text-xs text-gray-500">Enter employee details to create a profile.</p>
+            <h3 className="text-lg font-bold text-gray-900">
+              Add New Employee
+            </h3>
+            <p className="text-xs text-gray-500">
+              Enter employee details to create a profile.
+            </p>
           </div>
           <button
             type="button"
@@ -24,7 +45,7 @@ const AddEmployeeModal = ({ isOpen, onClose }) => {
         </div>
 
         {/* Form Fields */}
-        <form onSubmit={(e) => e.preventDefault()} className="p-6 space-y-4">
+        <form onSubmit={handleCreateEmployee} className="p-6 space-y-4">
           {/* Name Field */}
           <div>
             <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
@@ -33,6 +54,7 @@ const AddEmployeeModal = ({ isOpen, onClose }) => {
             <div className="relative">
               <FiUser className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
+                onChange={handleInputFields}
                 type="text"
                 name="name"
                 placeholder="e.g. Rakibul Hasan"
@@ -49,6 +71,7 @@ const AddEmployeeModal = ({ isOpen, onClose }) => {
             <div className="relative">
               <FiMail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
+                onChange={handleInputFields}
                 type="email"
                 name="email"
                 placeholder="e.g. rakibul@gmail.com"
@@ -65,6 +88,7 @@ const AddEmployeeModal = ({ isOpen, onClose }) => {
             <div className="relative">
               <FiLayers className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
+                onChange={handleInputFields}
                 type="text"
                 name="department"
                 placeholder="e.g. Software Development"
@@ -81,6 +105,7 @@ const AddEmployeeModal = ({ isOpen, onClose }) => {
             <div className="relative">
               <FiBriefcase className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
+                onChange={handleInputFields}
                 type="text"
                 name="position"
                 placeholder="e.g. Software Developer"
@@ -94,13 +119,13 @@ const AddEmployeeModal = ({ isOpen, onClose }) => {
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              className="cursor-pointer px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-5 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-xs transition-colors"
+              className="cursor-pointer px-5 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-xs transition-colors"
             >
               Add Employee
             </button>
