@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import Sidebar from "./Sidebar";
 import EmployeeDetails from "./EmployeeDetails";
 import AddEmployeeModal from "../common/AddEmployeeModal";
-// import UpdateEmployeeModal from "../common/UpdateEmployeeModal";
+import UpdateEmployeeModal from "../common/UpdateEmployeeModal";
 import ConfirmationModal from "../common/ConfirmationModal";
 
 const MainLayout = () => {
@@ -15,7 +16,7 @@ const MainLayout = () => {
 
   // Modal open states
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  // const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const handleSelectEmployee = async (id) => {
@@ -34,7 +35,41 @@ const MainLayout = () => {
     }
   };
 
-  const handleOpenEdit = () => {};
+  const handleUpdateEmployee = async (data) => {
+    try {
+      const res = await fetch(
+        `https://emp-nestjs.onrender.com/api/employees/${selectedEmployeeId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        },
+      );
+
+      const result = await res.json();
+
+      console.log(result);
+      setReloadData(true);
+      setIsUpdateModalOpen(false);
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Data has been saved",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error?.message || "Something went wrong!",
+        footer: '<a href="#">Why do I have this issue?</a>',
+      });
+    }
+  };
 
   const handleCreateEmployee = async (data) => {
     try {
@@ -51,8 +86,21 @@ const MainLayout = () => {
       console.log(result);
       setReloadData(true);
       setIsAddModalOpen(false);
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Created",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } catch (error) {
       console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error?.message || "Something went wrong!",
+        footer: '<a href="#">Why do I have this issue?</a>',
+      });
     }
   };
 
@@ -68,8 +116,21 @@ const MainLayout = () => {
       setSelectedEmployeeId(0);
       setSelectedEmployee(null);
       setIsDeleteModalOpen(false);
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Data Deleted Successfully",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } catch (error) {
       console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error?.message || "Something went wrong!",
+        footer: '<a href="#">Why do I have this issue?</a>',
+      });
     }
   };
 
@@ -109,7 +170,7 @@ const MainLayout = () => {
       <main className="flex-1 flex flex-col h-full min-w-0 overflow-hidden">
         <EmployeeDetails
           employee={selectedEmployee}
-          onEdit={handleOpenEdit}
+          onEdit={() => setIsUpdateModalOpen(true)}
           onDelete={() => setIsDeleteModalOpen(true)}
         />
       </main>
@@ -121,11 +182,12 @@ const MainLayout = () => {
         onSubmit={handleCreateEmployee}
       />
 
-      {/* <UpdateEmployeeModal
+      <UpdateEmployeeModal
         isOpen={isUpdateModalOpen}
         onClose={() => setIsUpdateModalOpen(false)}
         employee={selectedEmployee}
-      /> */}
+        onSubmit={handleUpdateEmployee}
+      />
 
       <ConfirmationModal
         isOpen={isDeleteModalOpen}
